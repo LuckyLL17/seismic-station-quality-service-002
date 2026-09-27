@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import type { Observation, QualityReport, Station } from './types.js';
+import type { IngestBatchRecord, Observation, QualityReport, Station } from './types.js';
 
 export const stations: Station[] = [
   { id: 'st-001', code: 'QZ-A01', name: '青岚台站', region: '川西断裂带', elevationM: 1840, status: 'online', lastSeenAt: new Date().toISOString() },
@@ -8,6 +8,7 @@ export const stations: Station[] = [
 ];
 export const observations: Observation[] = [];
 export const reports: QualityReport[] = [];
+export const batches = new Map<string, IngestBatchRecord>();
 export function createReport(stationId: string, start: string, end: string): QualityReport {
   const rows = observations.filter(item => item.stationId === stationId && item.observedAt >= start && item.observedAt <= end);
   const averageScore = rows.length ? Math.round(rows.reduce((sum, item) => sum + item.qualityScore, 0) / rows.length) : 0;
